@@ -1,0 +1,79 @@
+spring:
+  application:
+    name: ecommerce-api-gateway
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+      routes:
+        - id: product-service
+          uri: lb://ecommerce-product-service
+          predicates:
+            - Path=/api/v1/products/**
+        - id: user-service
+          uri: lb://ecommerce-user-service
+          predicates:
+            - Path=/api/v1/users/**
+        - id: category-service
+          uri: lb://ecommerce-category-service
+          predicates:
+            - Path=/api/v1/categories/**
+        - id: analytics-service
+          uri: lb://ecommerce-analytics-service
+          predicates:
+            - Path=/api/v1/analytics/**
+
+        # Swagger Routes
+        - id: product-swagger
+          uri: lb://ecommerce-product-service
+          predicates:
+            - Path=/product-service/v3/api-docs/**
+          filters:
+            - RewritePath=/product-service/(?<path>.*), /${path}
+        - id: user-swagger
+          uri: lb://ecommerce-user-service
+          predicates:
+            - Path=/user-service/v3/api-docs/**
+          filters:
+            - RewritePath=/user-service/(?<path>.*), /${path}
+        - id: category-swagger
+          uri: lb://ecommerce-category-service
+          predicates:
+            - Path=/category-service/v3/api-docs/**
+          filters:
+            - RewritePath=/category-service/(?<path>.*), /${path}
+        - id: analytics-swagger
+          uri: lb://ecommerce-analytics-service
+          predicates:
+            - Path=/analytics-service/v3/api-docs/**
+          filters:
+            - RewritePath=/analytics-service/(?<path>.*), /${path}
+
+springdoc:
+  swagger-ui:
+    urls:
+      - name: User Service
+        url: /user-service/v3/api-docs
+      - name: Product Service
+        url: /product-service/v3/api-docs
+      - name: Category Service
+        url: /category-service/v3/api-docs
+      - name: Analytics Service
+        url: /analytics-service/v3/api-docs
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

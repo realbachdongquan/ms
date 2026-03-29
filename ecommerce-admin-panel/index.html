@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecommerce Admin Pro Max</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="login-screen" class="screen active">
+        <div class="login-card glass">
+            <div class="login-header">
+                <i class="fas fa-shopping-bag logo-icon"></i>
+                <h1>Admin Portal</h1>
+                <p>Welcome back, please login to continue</p>
+            </div>
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter your username" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                    <span>Login</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+            <div id="login-error" class="error-msg"></div>
+        </div>
+    </div>
+
+    <div id="main-screen" class="screen">
+        <aside class="sidebar glass">
+            <div class="sidebar-header">
+                <i class="fas fa-shopping-bag"></i>
+                <span>Pro Max Admin</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-target="dashboard">
+                    <i class="fas fa-chart-line"></i> Dashboard
+                </a>
+                <a href="#" class="nav-item" data-target="products">
+                    <i class="fas fa-box"></i> Products
+                </a>
+                <a href="#" class="nav-item" data-target="categories">
+                    <i class="fas fa-tags"></i> Categories
+                </a>
+                <a href="#" class="nav-item" data-target="users">
+                    <i class="fas fa-users"></i> Users
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logout-btn" class="btn btn-ghost">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="content">
+            <header class="content-header">
+                <h2 id="page-title">Dashboard</h2>
+                <div class="user-profile">
+                    <span id="user-display-name">Admin</span>
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=random" alt="Avatar">
+                </div>
+            </header>
+
+            <!-- Dashboard View -->
+            <section id="dashboard-view" class="view active">
+                <div class="stats-grid">
+                    <div class="stat-card glass gradient-blue">
+                        <div class="stat-info">
+                            <h3>Total Products</h3>
+                            <p id="stat-products-count">0</p>
+                        </div>
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="stat-card glass gradient-purple">
+                        <div class="stat-info">
+                            <h3>Categories</h3>
+                            <p id="stat-categories-count">0</p>
+                        </div>
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <div class="stat-card glass gradient-orange">
+                        <div class="stat-info">
+                            <h3>Active Users</h3>
+                            <p id="stat-users-count">0</p>
+                        </div>
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Products View -->
+            <section id="products-view" class="view">
+                <div class="view-header">
+                    <h3>All Products</h3>
+                    <button class="btn btn-primary" onclick="showModal('product-modal')">
+                        <i class="fas fa-plus"></i> Add Product
+                    </button>
+                </div>
+                <div class="table-container glass">
+                    <table id="products-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data injected here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Categories View -->
+            <section id="categories-view" class="view">
+                <div class="view-header">
+                    <h3>Categories (Advertisements)</h3>
+                    <button class="btn btn-primary" onclick="showModal('category-modal')">
+                        <i class="fas fa-plus"></i> Add Category
+                    </button>
+                </div>
+                <div class="table-container glass">
+                    <table id="categories-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Target</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data injected here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h3>Add/Edit Product</h3>
+                <span class="close" onclick="hideModal('product-modal')">&times;</span>
+            </div>
+            <form id="product-form">
+                <input type="hidden" id="product-id">
+                <div class="input-group">
+                    <label>Name</label>
+                    <input type="text" id="p-name" required>
+                </div>
+                <div class="input-group">
+                    <label>Description</label>
+                    <textarea id="p-desc" required></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Price</label>
+                    <input type="number" id="p-price" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-ghost" onclick="hideModal('product-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="category-modal" class="modal">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h3>Add/Edit Category</h3>
+                <span class="close" onclick="hideModal('category-modal')">&times;</span>
+            </div>
+            <form id="category-form">
+                <input type="hidden" id="category-id">
+                <div class="input-group">
+                    <label>Name</label>
+                    <input type="text" id="c-name" required>
+                </div>
+                <div class="input-group">
+                    <label>Description</label>
+                    <textarea id="c-desc" required></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Target Link</label>
+                    <input type="text" id="c-target" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-ghost" onclick="hideModal('category-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
