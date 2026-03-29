@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/v1/categories/admin")
@@ -106,9 +108,12 @@ public class AdminController {
 
         LOGGER.info("AdminController | CategoryFallback | error : " + "CircuitBreaker Works! Error : " + e.getMessage());
 
-        return new ResponseEntity<String>(
-                "CircuitBreaker Works! Error : " + e.getMessage(),
-                HttpStatus.OK);
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", "CircuitBreaker Works!");
+        errorResponse.put("message", e.getMessage());
+        errorResponse.put("status", "Service Unavailable (Fallback)");
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.OK);
 
     }
 
